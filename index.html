@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+  <title>Factory Tycoon</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Factory Tycoon home">
+        <span class="brand-mark">⚙</span><span>FACTORY<span class="brand-light"> TYCOON</span></span>
+      </a>
+      <div class="top-stats">
+        <div class="stat-pill"><span class="stat-icon">◈</span><div><small>CASH</small><strong id="cash">$250</strong></div></div>
+        <div class="stat-pill"><span class="stat-icon ore-icon">◆</span><div><small>RAW ORE</small><strong id="rawOre">0</strong></div></div>
+        <div class="stat-pill"><span class="stat-icon ingot-icon">▰</span><div><small>INGOTS</small><strong id="ingots">0</strong></div></div>
+      </div>
+      <button class="icon-button" id="soundBtn" title="Toggle sound" aria-label="Toggle sound">♫</button>
+    </header>
+
+    <main>
+      <section class="welcome-row">
+        <div><p class="eyebrow">YOUR INDUSTRIAL EMPIRE</p><h1>Factory <span>Overview</span></h1><p class="subheading">Turn raw materials into a thriving production empire.</p></div>
+        <div class="level-card"><span class="level-symbol">★</span><div><small>FACTORY LEVEL</small><strong id="level">1</strong></div><div class="level-progress"><div id="levelProgress"></div></div></div>
+      </section>
+
+      <section class="dashboard-grid">
+        <div class="main-column">
+          <article class="panel factory-panel">
+            <div class="panel-heading"><div><p class="eyebrow">PRODUCTION FLOOR</p><h2>Your Factory</h2></div><span class="live-tag"><i></i> LIVE</span></div>
+            <div class="factory-scene">
+              <div class="scene-glow"></div>
+              <div class="factory-skyline"><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="factory-building">
+                <div class="roofline"></div>
+                <div class="factory-sign">IRONWORKS <b>01</b></div>
+                <div class="chimney"><i></i><i></i><i></i></div>
+                <div class="windows"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="factory-door"></div>
+              </div>
+              <div class="conveyor-label"><span class="pulse-dot"></span> ORE CONVEYOR</div>
+              <div class="conveyor">
+                <div class="belt"></div>
+                <div class="belt-rollers"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="ore-track" id="oreTrack"></div>
+              </div>
+              <div class="machine-visuals" id="machineVisuals">
+                <div class="mini-machine"><span>⚙</span><small>SMELTER</small><b id="smelterCount">1</b></div>
+                <div class="mini-machine"><span>▤</span><small>PRESS</small><b id="pressCount">0</b></div>
+                <div class="mini-machine"><span>⌁</span><small>PACKER</small><b id="packerCount">0</b></div>
+              </div>
+              <div class="scene-footer"><span>EST. 2026</span><span>INDUSTRIAL DISTRICT · SECTOR 01</span></div>
+            </div>
+            <div class="production-metrics">
+              <div><span class="metric-label">ORE / MIN</span><strong id="oreRate">12</strong><small>Incoming materials</small></div>
+              <div><span class="metric-label">INGOTS / MIN</span><strong id="ingotRate">0</strong><small>Smelting output</small></div>
+              <div><span class="metric-label">REVENUE / MIN</span><strong id="revenueRate">$0</strong><small>Estimated sales</small></div>
+            </div>
+          </article>
+
+          <article class="panel inventory-panel">
+            <div class="panel-heading"><div><p class="eyebrow">MATERIALS & OUTPUT</p><h2>Inventory</h2></div><button class="text-button" id="sellAllBtn">Sell all ingots ↗</button></div>
+            <div class="inventory-items">
+              <div class="inventory-item"><div class="item-art raw-art">◆</div><div class="item-info"><b>Raw ore</b><small>Unprocessed material</small></div><strong id="inventoryOre">0</strong></div>
+              <div class="inventory-item"><div class="item-art iron-art">▰</div><div class="item-info"><b>Iron ingots</b><small>Standard refined metal</small></div><strong id="inventoryIngots">0</strong></div>
+              <div class="inventory-item"><div class="item-art gold-art">⬟</div><div class="item-info"><b>Rare minerals</b><small>Bonus-value resources</small></div><strong id="inventoryRare">0</strong></div>
+            </div>
+          </article>
+        </div>
+
+        <aside class="side-column">
+          <article class="panel action-panel">
+            <div class="panel-heading"><div><p class="eyebrow">QUICK ACTIONS</p><h2>Operations</h2></div></div>
+            <button class="primary-action" id="collectBtn"><span class="action-symbol">↓</span><span><b>Collect incoming ore</b><small>Claim materials from the conveyor</small></span><kbd>SPACE</kbd></button>
+            <button class="secondary-action" id="smeltBtn"><span class="action-symbol">♨</span><span><b>Smelt raw ore</b><small>Convert 10 ore into 1 ingot</small></span><span class="action-cost" id="smeltCost">10 ◆</span></button>
+            <button class="secondary-action" id="sellBtn"><span class="action-symbol">↗</span><span><b>Sell ingots</b><small>Earn $25 per ingot</small></span><span class="action-cost">+$25</span></button>
+            <p class="hint" id="actionHint">Tip: Collect ore regularly to keep production moving.</p>
+          </article>
+
+          <article class="panel goals-panel">
+            <div class="panel-heading"><div><p class="eyebrow">NEXT MILESTONES</p><h2>Factory Goals</h2></div><span class="goal-count" id="goalCount">0/3</span></div>
+            <div id="goalsList" class="goals-list"></div>
+          </article>
+          <article class="panel stats-panel">
+            <div class="panel-heading"><div><p class="eyebrow">BUSINESS REPORT</p><h2>Lifetime Stats</h2></div></div>
+            <div class="business-stat"><span>Total earned</span><b id="totalEarned">$0</b></div>
+            <div class="business-stat"><span>Ore collected</span><b id="totalCollected">0</b></div>
+            <div class="business-stat"><span>Ingots sold</span><b id="totalSold">0</b></div>
+          </article>
+        </aside>
+      </section>
+
+      <section class="panel expansion-panel">
+        <div class="panel-heading"><div><p class="eyebrow">GROW YOUR EMPIRE</p><h2>Factory Development</h2></div><span class="upgrade-note">Invest · Expand · Dominate</span></div>
+        <div class="upgrade-grid">
+          <article class="upgrade-card">
+            <div class="upgrade-top"><div class="upgrade-icon smelter-icon">♨</div><span class="upgrade-level" id="smelterLevel">LEVEL 1</span></div>
+            <h3>Smelter</h3><p>Automatically turn raw ore into valuable iron ingots.</p>
+            <div class="upgrade-detail"><span>Production speed</span><b id="smelterSpeed">1 / 10 sec</b></div>
+            <button class="buy-button" id="buySmelter">Upgrade · $150</button>
+          </article>
+          <article class="upgrade-card">
+            <div class="upgrade-top"><div class="upgrade-icon press-icon">▤</div><span class="upgrade-level" id="pressLevel">LOCKED</span></div>
+            <h3>Industrial Press</h3><p>Improve your output and increase the value of every ingot.</p>
+            <div class="upgrade-detail"><span>Ingot value bonus</span><b id="pressBonus">+0%</b></div>
+            <button class="buy-button" id="buyPress">Unlock · $500</button>
+          </article>
+          <article class="upgrade-card">
+            <div class="upgrade-top"><div class="upgrade-icon packer-icon">⌁</div><span class="upgrade-level" id="packerLevel">LOCKED</span></div>
+            <h3>Auto Packer</h3><p>Automatically sell finished ingots and keep cash flowing.</p>
+            <div class="upgrade-detail"><span>Automatic sales</span><b id="packerSpeed">Inactive</b></div>
+            <button class="buy-button" id="buyPacker">Unlock · $1,200</button>
+          </article>
+          <article class="upgrade-card">
+            <div class="upgrade-top"><div class="upgrade-icon drill-icon">⛏</div><span class="upgrade-level" id="drillLevel">LEVEL 1</span></div>
+            <h3>Mining Drill</h3><p>Increase how much ore arrives on your conveyor.</p>
+            <div class="upgrade-detail"><span>Ore delivery</span><b id="drillSpeed">12 / min</b></div>
+            <button class="buy-button" id="buyDrill">Upgrade · $100</button>
+          </article>
+        </div>
+      </section>
+      <footer><span>FACTORY TYCOON <b>v1.0</b></span><span>Your empire is saved automatically on this device.</span><button id="resetBtn">Reset factory</button></footer>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
